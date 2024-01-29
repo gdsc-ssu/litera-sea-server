@@ -1,5 +1,7 @@
 package com.server.literasea.controller;
 
+import com.server.literasea.dto.BaseResponse;
+import com.server.literasea.service.UserService;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 
@@ -8,8 +10,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/user")
 public class UserController {
 
+    private final UserService userService;
+
     @GetMapping("/test")
-    public String test() {
-        return "Hello world";
+    public BaseResponse<String> test() {
+        return BaseResponse.success("ok", "Hello, world!");
     }
 }
