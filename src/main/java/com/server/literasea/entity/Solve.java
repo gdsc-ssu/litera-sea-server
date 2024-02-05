@@ -1,8 +1,10 @@
 package com.server.literasea.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Solve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

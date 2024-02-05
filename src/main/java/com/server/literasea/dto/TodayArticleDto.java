@@ -5,7 +5,7 @@ import lombok.Builder;
 
 @Builder
 public class TodayArticleDto {
-    private Integer articleId;
+    private Long articleId;
     private ArticleCategory articleCategory;
     private String article;
 

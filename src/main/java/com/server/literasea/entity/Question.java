@@ -2,8 +2,10 @@ package com.server.literasea.entity;
 
 import com.server.literasea.enums.ArticleCategory;
 import jakarta.persistence.*;
+import lombok.Getter;
 
 @Entity
+@Getter
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
