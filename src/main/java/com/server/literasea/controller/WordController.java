@@ -33,9 +33,9 @@ public class WordController {
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
     public ResponseEntity<Word> saveWordByDto(@RequestBody WordInfoDto wordInfoDto){
         //TODO: 유저 불러오기
-        Users users;
+        Users users=new Users();
         return ResponseEntity.status(HttpStatus.CREATED).
-                body(wordService.saveWord(wordInfoDto));
+                body(wordService.saveWord(users.getId(), wordInfoDto));
     }
 
     @GetMapping("/wordList")
@@ -50,7 +50,7 @@ public class WordController {
     @GetMapping()
     @Operation(summary="word_id로 단어 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-    public ResponseEntity<WordInfoDto> getWordDtoByWordId(@PathVariable Long wordId) throws Exception {
+    public ResponseEntity<WordInfoDto> getWordDtoByWordId(@PathVariable Long wordId){
         return ResponseEntity.ok(wordService.findWordDtoByWordId(wordId));
     }
 }
