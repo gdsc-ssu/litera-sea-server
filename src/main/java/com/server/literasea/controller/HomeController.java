@@ -2,6 +2,7 @@ package com.server.literasea.controller;
 
 import com.server.literasea.dto.BadgeInfoDto;
 import com.server.literasea.dto.BaseResponse;
+import com.server.literasea.dto.BoatInfoDto;
 import com.server.literasea.dto.ResponseMainPageDto;
 import com.server.literasea.entity.Users;
 import com.server.literasea.repository.UsersRepository;
@@ -40,11 +41,11 @@ public class HomeController {
 
     @Operation(summary="메인페이지 불러오기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-    @GetMapping()
+    @GetMapping("/main")
     public ResponseEntity<ResponseMainPageDto> getMainPage(){
         //TODO: 유저 불러오기, 유저 못찾을시 오류문 핸들러
         Users users = usersRepository.findById(Long.valueOf(1)).get();
-        return ResponseEntity.ok().body(homeService.getResponseMainPageDto(users));
+        return ResponseEntity.ok().body(homeService.getMainPageDtoByUsers(users));
     }
 
     @Operation(summary="뱃지 보관함 불러오기")
@@ -53,13 +54,13 @@ public class HomeController {
     public ResponseEntity<List<BadgeInfoDto>> getBadgeInfo(){
         //TODO: 유저 불러오기, 유저 못찾을시 오류문 핸들러
         Users users =new Users();
-        return ResponseEntity.ok().body(homeService.getBadgeInfoDtoList(users));
+        return ResponseEntity.ok().body(homeService.getBadgeInfoDtoListByUsers(users));
     }
 
     @Operation(summary="배 조각 보관함 불러오기")
     @ApiResponse(responseCode = "200", description = "배 조각 정보 DTO 반환")
     @GetMapping("/boatInfo")
-    public ResponseEntity<?> getBoatInfo(){
+    public ResponseEntity<BoatInfoDto> getBoatInfo(){
         //TODO: 유저 불러오기, 유저 못찾을시 오류문 핸들러
         Users users =new Users();
         return ResponseEntity.ok().body(homeService.getBoatInfoDto(users));

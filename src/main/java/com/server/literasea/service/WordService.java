@@ -9,6 +9,7 @@ import com.server.literasea.repository.UsersRepository;
 import com.server.literasea.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,31 +21,18 @@ import static com.server.literasea.exception.WordExceptionType.NOT_FOUND_ID;
 @RequiredArgsConstructor
 @Service
 public class WordService {
+    //repository------------------------------------------------------------------------
     private final WordRepository wordRepository;
     private final UsersRepository usersRepository;
-
+    //공용------------------------------------------------------------------------------------
+    //TODO: 토큰에서 유저 아이디 빼기
+    private Long getUserIdByToken(String token){return 1l;};
     private Users findUsersById(Long usersId){
         return usersRepository.findById(usersId)
                 .orElseThrow(() -> new UsersException(NOT_FOUND));
     }
-
-    private List<Word> findWordListByUsers(Users users){
-        return users.getWords();
-    }
-
-    private Word findWordByWordId(Long wordId){
-        return wordRepository.findById(wordId)
-                .orElseThrow(()->new WordException(NOT_FOUND_ID));
-    }
-
-    public Word saveWord(Long usersId, WordInfoDto wordInfoDto) {
-        Users users=findUsersById(usersId);
-        Word word=Word.from(wordInfoDto);
-        users.addWord(word);
-        wordRepository.save(word);
-        return word;
-    }
-
+    //wordList--------------------------------------------------------------------
+    @Transactional(readOnly = true)
     public List<WordInfoDto> getWordDtoList(Users users) {
         List<Word> wordList= findWordListByUsers(users);
         List<WordInfoDto> wordInfoDtoList=new ArrayList<>();
@@ -53,9 +41,29 @@ public class WordService {
         }
         return wordInfoDtoList;
     }
-
+    private List<Word> findWordListByUsers(Users users){
+        return users.getWords();
+    }
+    //GETword------------------------------------------------------------------------
+    @Transactional(readOnly = true)
     public WordInfoDto findWordDtoByWordId(Long wordId){
         Word word= findWordByWordId(wordId);
         return WordInfoDto.from(word);
     }
+    private Word findWordByWordId(Long wordId){
+        return wordRepository.findById(wordId)
+                .orElseThrow(()->new WordException(NOT_FOUND_ID));
+    }
+    //POSTword---------------------------------------------------------------------------------
+    public Word saveWord(Long usersId, WordInfoDto wordInfoDto) {
+        Users users=findUsersById(usersId);
+        Word word=Word.from(wordInfoDto);
+        users.addWord(word);
+        wordRepository.save(word);
+        return word;
+    }
+    //---------------------------------------------------------------------------------------
+
+
+
 }

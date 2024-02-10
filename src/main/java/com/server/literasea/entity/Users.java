@@ -58,7 +58,7 @@ public class Users {
 
     public Users(){};
 
-    public static ResponseMainPageDto to(Users users){
+    public static ResponseMainPageDto usersToDto(Users users){
         return ResponseMainPageDto.builder()
                 .nickname(users.nickname)
                 .location(users.location)
@@ -69,10 +69,6 @@ public class Users {
 
     public List<BadgeInfoDto> getBadges(Users users){
         return users.inventory.getBadgeInfoDtos();
-    }
-
-    public BoatInfoDto getBoatInfoDto(){
-        return Inventory.to(this.inventory);
     }
 
     public void addWord(Word word){
