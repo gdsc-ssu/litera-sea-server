@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.server.literasea.entity.Solve;
 
 public interface SolveRepository extends JpaRepository<Solve, Long> {
-    List<Solve> findAllById(Long Id);
+
 }

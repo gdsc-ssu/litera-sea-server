@@ -26,8 +26,9 @@ public class TodayController {
     }
 
     @PostMapping("/post")
-    @Operation(summary = "유저가 작성한 요약 전송하고 결과 불러오기", description = "로그인은 추후 추가 예정입니다.")
+    @Operation(summary = "유저가 작성한 요약 전송하고 결과 불러오기", description = "AI 정해지면 개발 예정입니다.")
     public BaseResponse<String> todayPost() {
+        // 미구현 상태입니다.
         return BaseResponse.success("ok", "Hello, world!");
     }
 }
