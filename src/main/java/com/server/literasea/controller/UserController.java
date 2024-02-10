@@ -12,7 +12,7 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/test")
+    @GetMapping("/sign-up")
     public BaseResponse<String> test() {
         return BaseResponse.success("ok", "Hello, world!");
     }
