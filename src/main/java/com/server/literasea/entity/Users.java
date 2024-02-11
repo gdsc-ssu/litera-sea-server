@@ -21,6 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Users implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
@@ -29,6 +30,10 @@ public class Users implements UserDetails {
     @OneToOne(fetch = FetchType.LAZY)  //TODO:단방향, 유저 생성(회원가입)시 인벤토리 생성 필수(null로)!
     @JoinColumn(name="user_inventory_id", referencedColumnName = "inventory_id")
     private Inventory inventory;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "users")
+    private List<Word> words=new ArrayList<>();
   
     @Column(name = "email")
     private String email;
@@ -72,6 +77,7 @@ public class Users implements UserDetails {
 
     public BoatInfoDto getBoatInfoDto(){
         return Inventory.to(this.inventory);
+    }
 
     @Override
     public ArrayList<GrantedAuthority> getAuthorities() {

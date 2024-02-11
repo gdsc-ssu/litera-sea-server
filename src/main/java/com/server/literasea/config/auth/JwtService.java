@@ -2,12 +2,12 @@ package com.server.literasea.config.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.server.literasea.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import com.server.literasea.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,7 +31,7 @@ public class JwtService {
     @Value("${security.jwt.access.header}")
     private String accessHeader;
 
-    @Value("${{security.jwt.refresh.header}")
+    @Value("${security.jwt.refresh.header}")
     private String refreshHeader;
 
 
@@ -43,7 +43,6 @@ public class JwtService {
     private final int accessTokenExpirationPeriod = 3600000;
 
     private final int refreshTokenExpirationPeriod = 1209600000;
-
     private final UserRepository userRepository;
     private final CustomUserDetailsService customUserDetailsService;
 

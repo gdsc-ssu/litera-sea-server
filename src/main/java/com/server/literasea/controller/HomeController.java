@@ -43,7 +43,7 @@ public class HomeController {
     @GetMapping()
     public ResponseEntity<ResponseMainPageDto> getMainPage(){
         //TODO: 유저 불러오기, 유저 못찾을시 오류문 핸들러
-        Users users =userRepository.findById(Long.valueOf(1)).get();
+        Users users = userRepository.findById(Long.valueOf(1)).get();
         return ResponseEntity.ok().body(homeService.getResponseMainPageDto(users));
     }
 
