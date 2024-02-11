@@ -5,7 +5,7 @@ import com.server.literasea.entity.Users;
 import com.server.literasea.entity.Word;
 import com.server.literasea.exception.UsersException;
 import com.server.literasea.exception.WordException;
-import com.server.literasea.repository.UsersRepository;
+import com.server.literasea.repository.UserRepository;
 import com.server.literasea.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,12 +23,12 @@ import static com.server.literasea.exception.WordExceptionType.NOT_FOUND_ID;
 public class WordService {
     //repository------------------------------------------------------------------------
     private final WordRepository wordRepository;
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     //공용------------------------------------------------------------------------------------
     //TODO: 토큰에서 유저 아이디 빼기
     private Long getUserIdByToken(String token){return 1l;};
     private Users findUsersById(Long usersId){
-        return usersRepository.findById(usersId)
+        return userRepository.findById(usersId)
                 .orElseThrow(() -> new UsersException(NOT_FOUND));
     }
     //wordList--------------------------------------------------------------------

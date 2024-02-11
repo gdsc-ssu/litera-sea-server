@@ -28,13 +28,13 @@ public class Users implements UserDetails {
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)  //TODO:단방향, 유저 생성(회원가입)시 인벤토리 생성 필수(null로)!
-    @JoinColumn(name="user_inventory_id", referencedColumnName = "inventory_id")
+    @JoinColumn(name = "user_inventory_id", referencedColumnName = "inventory_id")
     private Inventory inventory;
 
     @Builder.Default
     @OneToMany(mappedBy = "users")
-    private List<Word> words=new ArrayList<>();
-  
+    private List<Word> words = new ArrayList<>();
+
     @Column(name = "email")
     private String email;
 
@@ -58,12 +58,12 @@ public class Users implements UserDetails {
 
     @Column(name = "grammar_score")
     private Integer grammarScore;
-  
+
     @Column(name = "voca_score")
     private Integer vocaScore;
 
 
-    public static ResponseMainPageDto usersToDto(Users users){
+    public static ResponseMainPageDto usersToDto(Users users) {
         return ResponseMainPageDto.builder()
                 .nickname(users.nickname)
                 .location(users.location)
@@ -72,13 +72,10 @@ public class Users implements UserDetails {
                 .build();
     }
 
-    public List<BadgeInfoDto> getBadges(Users users){
+    public List<BadgeInfoDto> getBadges(Users users) {
         return users.inventory.getBadgeInfoDtos();
     }
 
-    public BoatInfoDto getBoatInfoDto(){
-        return Inventory.to(this.inventory);
-    }
 
     @Override
     public ArrayList<GrantedAuthority> getAuthorities() {
@@ -117,7 +114,7 @@ public class Users implements UserDetails {
         return true;
     }
 
-    public void addWord(Word word){
+    public void addWord(Word word) {
         this.words.add(word);
         word.setUsers(this);
     }

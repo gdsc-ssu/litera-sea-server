@@ -7,7 +7,7 @@ import com.server.literasea.entity.Badge;
 import com.server.literasea.entity.Inventory;
 import com.server.literasea.entity.Users;
 import com.server.literasea.exception.UsersException;
-import com.server.literasea.repository.UsersRepository;
+import com.server.literasea.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,49 +21,60 @@ import static com.server.literasea.exception.UsersExceptionType.NOT_FOUND;
 @Service
 public class HomeService {
     //repository-----------------------------------------------------------------
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
 
     //공용------------------------------------------------------------------------
     //TODO: 토큰에서 유저 아이디 빼기
-    private Long getUserIdByToken(String token){return 1l;};
-    private Users findUsersById(Long usersId){
-        return usersRepository.findById(usersId)
+    private Long getUserIdByToken(String token) {
+        return 1l;
+    }
+
+    ;
+
+    private Users findUsersById(Long usersId) {
+        return userRepository.findById(usersId)
                 .orElseThrow(() -> new UsersException(NOT_FOUND));
     }
-    private Inventory getInventoryByUsers(Users users){
+
+    private Inventory getInventoryByUsers(Users users) {
         return users.getInventory();
     }
+
     //badgeInfo----------------------------------------------------------
     @Transactional(readOnly = true)
-    public List<BadgeInfoDto> getBadgeInfoDtoListByUsers(Users users){
-        Inventory usersInventory=getInventoryByUsers(users);
-        List<Badge> usersBadges=getBadgeListByInventory(usersInventory);
+    public List<BadgeInfoDto> getBadgeInfoDtoListByUsers(Users users) {
+        Inventory usersInventory = getInventoryByUsers(users);
+        List<Badge> usersBadges = getBadgeListByInventory(usersInventory);
         return getBadgeDtoListByBadgeList(usersBadges);
     }
-    private List<BadgeInfoDto> getBadgeDtoListByBadgeList(List<Badge> badgeList){
-        List<BadgeInfoDto> badgeInfoDtoList=new ArrayList<>();
-        for(Badge badge : badgeList){
+
+    private List<BadgeInfoDto> getBadgeDtoListByBadgeList(List<Badge> badgeList) {
+        List<BadgeInfoDto> badgeInfoDtoList = new ArrayList<>();
+        for (Badge badge : badgeList) {
             badgeInfoDtoList.add(BadgeInfoDto.badgeToDto(badge));
         }
         return badgeInfoDtoList;
     }
-    private List<Badge> getBadgeListByInventory(Inventory inventory){
+
+    private List<Badge> getBadgeListByInventory(Inventory inventory) {
         return inventory.getBadges();
     }
 
 
     //main-----------------------------------------------------------------------------
     @Transactional(readOnly = true)
-    public ResponseMainPageDto getMainPageDtoByUsers(Users users){
+    public ResponseMainPageDto getMainPageDtoByUsers(Users users) {
         return Users.usersToDto(users);
     }
+
     //boatInfo-------------------------------------------------------------------------
     @Transactional(readOnly = true)
-    public BoatInfoDto getBoatInfoDto(Users users){
-        Inventory usersInventory=getInventoryByUsers(users);
+    public BoatInfoDto getBoatInfoDto(Users users) {
+        Inventory usersInventory = getInventoryByUsers(users);
         return getBoatInfoDtoByInventory(usersInventory);
     }
-    private BoatInfoDto getBoatInfoDtoByInventory(Inventory inventory){
+
+    private BoatInfoDto getBoatInfoDtoByInventory(Inventory inventory) {
         return BoatInfoDto.InventoryToBoatDto(inventory);
     }
     //-------------------------------------------------------------------------
