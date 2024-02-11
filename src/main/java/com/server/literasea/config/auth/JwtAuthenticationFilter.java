@@ -1,4 +1,4 @@
-package com.server.literasea.config;
+package com.server.literasea.config.auth;
 
 import com.server.literasea.entity.Users;
 import com.server.literasea.repository.UserRepository;

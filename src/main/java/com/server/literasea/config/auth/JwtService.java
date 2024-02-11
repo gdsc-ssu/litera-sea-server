@@ -1,4 +1,4 @@
-package com.server.literasea.config;
+package com.server.literasea.config.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
