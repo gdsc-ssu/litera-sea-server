@@ -3,11 +3,13 @@ package com.server.literasea.entity;
 import com.server.literasea.dto.BadgeInfoDto;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.util.List;
 
 @Entity
 @Builder
+@Getter
 public class Badge {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
@@ -28,13 +30,4 @@ public class Badge {
     public void setInventory(final Inventory inventory){  //TODO:Setter안쓰고 싶었는데...이것만 쓰자
         this.setInventory(inventory);
     }
-
-    public static BadgeInfoDto to(Badge badge){
-        return BadgeInfoDto.builder()
-                .name(badge.name)
-                .image(badge.image)
-                .build();
-    }
-
-
 }

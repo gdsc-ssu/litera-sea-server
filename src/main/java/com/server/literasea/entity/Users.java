@@ -58,11 +58,12 @@ public class Users implements UserDetails {
 
     @Column(name = "grammar_score")
     private Integer grammarScore;
-
+  
     @Column(name = "voca_score")
     private Integer vocaScore;
-  
-    public static ResponseMainPageDto to(Users users){
+
+
+    public static ResponseMainPageDto usersToDto(Users users){
         return ResponseMainPageDto.builder()
                 .nickname(users.nickname)
                 .location(users.location)
