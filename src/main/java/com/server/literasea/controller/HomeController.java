@@ -5,7 +5,7 @@ import com.server.literasea.dto.BaseResponse;
 import com.server.literasea.dto.BoatInfoDto;
 import com.server.literasea.dto.ResponseMainPageDto;
 import com.server.literasea.entity.Users;
-import com.server.literasea.repository.UsersRepository;
+import com.server.literasea.repository.UserRepository;
 import com.server.literasea.service.HomeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -26,7 +26,7 @@ public class HomeController {
     private final HomeService homeService;
 
     //TODO: 지워야됨 테스트용
-    private final UsersRepository usersRepository;
+    private final UserRepository userRepository;
     //지워야함
     
     private Users getUsersByToken(String token){
@@ -44,7 +44,8 @@ public class HomeController {
     @GetMapping("/main")
     public ResponseEntity<ResponseMainPageDto> getMainPage(){
         //TODO: 유저 불러오기, 유저 못찾을시 오류문 핸들러
-        Users users = usersRepository.findById(Long.valueOf(1)).get();
+
+        Users users = userRepository.findById(Long.valueOf(1)).get();
         return ResponseEntity.ok().body(homeService.getMainPageDtoByUsers(users));
     }
 
