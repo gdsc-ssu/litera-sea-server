@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -107,5 +108,10 @@ public class Users implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void addWord(Word word){
+        this.words.add(word);
+        word.setUsers(this);
     }
 }
