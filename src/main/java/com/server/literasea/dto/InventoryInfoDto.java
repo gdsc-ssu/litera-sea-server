@@ -2,14 +2,16 @@ package com.server.literasea.dto;
 
 import com.server.literasea.entity.Inventory;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
-public class BoatInfoDto {
+@Getter
+public class InventoryInfoDto {
     private int boatA;
     private int boatB;
 
-    public static BoatInfoDto InventoryToBoatDto(Inventory inventory){
-        return BoatInfoDto.builder()
+    public static InventoryInfoDto ToDto(Inventory inventory){
+        return InventoryInfoDto.builder()
                 .boatA(inventory.getBoatA())
                 .boatB(inventory.getBoatB())
                 .build();

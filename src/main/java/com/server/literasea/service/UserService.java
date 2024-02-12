@@ -4,6 +4,7 @@ import com.server.literasea.config.auth.JwtService;
 import com.server.literasea.config.auth.google.GetGoogleTokenResponse;
 import com.server.literasea.config.auth.google.GoogleAuthService;
 import com.server.literasea.dto.LoginResponseDto;
+import com.server.literasea.entity.Inventory;
 import com.server.literasea.entity.Users;
 import com.server.literasea.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,6 @@ public class UserService {
 
     @Transactional
     public Users saveUser(Map<String, String> googleUserInfo) {
-
         Users user = Users.builder()
                 .email(googleUserInfo.get("email"))
                 .nickname(googleUserInfo.get("name"))
@@ -52,9 +52,9 @@ public class UserService {
                 .vocaScore(0)
                 .level(0)
                 .location(0)
+                .inventory(new Inventory())
                 .build();
         userRepository.saveAndFlush(user);
         return user;
     }
-
 }

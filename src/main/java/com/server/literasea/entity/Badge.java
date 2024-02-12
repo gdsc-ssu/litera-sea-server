@@ -4,6 +4,7 @@ import com.server.literasea.dto.BadgeInfoDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class Badge {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "inventory_id")
+    @Setter
     private Inventory inventory;
 
     @Id

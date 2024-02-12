@@ -16,8 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Inventory {
+    @Builder.Default
     @OneToMany(mappedBy = "inventory", cascade = CascadeType.ALL)
-    private List<Badge> badges;
+    private List<Badge> badges= new ArrayList<>();
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
