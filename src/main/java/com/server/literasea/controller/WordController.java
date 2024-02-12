@@ -37,26 +37,24 @@ public class WordController {
     @PostMapping
     @Operation(summary="단어 저장하기")
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
-    public ResponseEntity<Word> saveWordByDto(@RequestBody WordInfoDto wordInfoDto){
-        //TODO: 유저 불러오기
-        Users users=new Users();
+    public ResponseEntity<Word> saveWordByDto(@AuthenticationPrincipal Users user,
+                                              @RequestBody WordInfoDto wordInfoDto){
         return ResponseEntity.status(HttpStatus.CREATED).
-                body(wordService.saveWord(users.getId(), wordInfoDto));
+                body(wordService.saveWord(user.getId(), wordInfoDto));
     }
 
     @GetMapping("/wordList")
     @Operation(summary="유저가 저장한 단어 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO 리스트형식으로 정보 반환")
-    public ResponseEntity<List<WordInfoDto>> getWordDtoListByUsers(){
-        //TODO: 유저 불러오기
-        Users users=new Users();
-        return ResponseEntity.ok(wordService.getWordDtoList(users));
+    public ResponseEntity<List<WordInfoDto>> getWordDtoListByUsers(@AuthenticationPrincipal Users user){
+        return ResponseEntity.ok(wordService.getWordDtoList(user));
     }
 
     @GetMapping()
     @Operation(summary="word_id로 단어 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-    public ResponseEntity<WordInfoDto> getWordDtoByWordId(@PathVariable Long wordId){
+    public ResponseEntity<WordInfoDto> getWordDtoByWordId(@AuthenticationPrincipal Users user,
+                                                          @PathVariable Long wordId){
         return ResponseEntity.ok(wordService.findWordDtoByWordId(wordId));
     }
 }

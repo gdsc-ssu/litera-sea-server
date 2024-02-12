@@ -1,13 +1,14 @@
 package com.server.literasea.entity;
 
 import com.server.literasea.dto.BadgeInfoDto;
-import com.server.literasea.dto.BoatInfoDto;
 import com.server.literasea.dto.ResponseMainPageDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,7 @@ public class Users implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)  //TODO:단방향, 유저 생성(회원가입)시 인벤토리 생성 필수(null로)!
+    @OneToOne(fetch = FetchType.LAZY, cascade = jakarta.persistence.CascadeType.ALL)
     @JoinColumn(name = "user_inventory_id", referencedColumnName = "inventory_id")
     private Inventory inventory;
 
@@ -72,11 +73,6 @@ public class Users implements UserDetails {
                 .build();
     }
 
-    public List<BadgeInfoDto> getBadges(Users users) {
-        return users.inventory.getBadgeInfoDtos();
-    }
-
-
     @Override
     public ArrayList<GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
@@ -117,5 +113,9 @@ public class Users implements UserDetails {
     public void addWord(Word word) {
         this.words.add(word);
         word.setUsers(this);
+    }
+
+    public void setInventory(Inventory inventory){
+        this.inventory=inventory;
     }
 }
