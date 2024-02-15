@@ -1,14 +1,11 @@
 package com.server.literasea.entity;
 
-import com.server.literasea.dto.BadgeInfoDto;
 import com.server.literasea.dto.ResponseMainPageDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,7 +49,7 @@ public class Users implements UserDetails {
     private Integer exp;
 
     @Column(name = "user_day")
-    private Integer day;
+    private Long day;
 
     @Column(name = "subject_score")
     private Integer subjectScore;

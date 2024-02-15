@@ -45,7 +45,7 @@ public class UserService {
         Users user = Users.builder()
                 .email(googleUserInfo.get("email"))
                 .nickname(googleUserInfo.get("name"))
-                .day(0)
+                .day(0L)
                 .exp(0)
                 .grammarScore(0)
                 .subjectScore(0)
