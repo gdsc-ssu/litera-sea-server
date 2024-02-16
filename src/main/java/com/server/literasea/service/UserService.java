@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -22,7 +23,7 @@ public class UserService {
     private final JwtService jwtService;
 
     @Transactional
-    public LoginResponseDto login(String code) throws Exception {
+    public LoginResponseDto googleLogin(String code) throws Exception {
         GetGoogleTokenResponse getGoogleTokenResponse = googleAuthService.getTokensResponse(code);
 
         Map<String, String> googleUserInfo = googleAuthService.getUserGoogleProfile(getGoogleTokenResponse.getTokenResponse());
@@ -33,6 +34,27 @@ public class UserService {
 
         String serviceAccessToken = jwtService.createAccessToken(googleUserInfo.get("email"));
         String serviceRefreshToken = jwtService.createRefreshToken(googleUserInfo.get("email"));
+
+        return LoginResponseDto.builder()
+                .accessToken(serviceAccessToken)
+                .refreshToken(serviceRefreshToken)
+                .build();
+    }
+
+    @Transactional
+    public LoginResponseDto login(String userName) {
+
+        Map<String, String> userInfo = new HashMap<>();
+
+        userInfo.put("email", "test@test.com");
+        userInfo.put("name", userName);
+
+        Users users = userRepository.findByEmail(userName).orElseGet(
+                () -> saveUser(userInfo)
+        );
+
+        String serviceAccessToken = jwtService.createAccessToken(userInfo.get("email"));
+        String serviceRefreshToken = jwtService.createRefreshToken(userInfo.get("email"));
 
         return LoginResponseDto.builder()
                 .accessToken(serviceAccessToken)
