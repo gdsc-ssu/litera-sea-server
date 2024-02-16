@@ -1,10 +1,16 @@
 package com.server.literasea.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Solve {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

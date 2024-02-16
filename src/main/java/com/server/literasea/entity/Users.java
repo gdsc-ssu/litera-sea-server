@@ -33,6 +33,9 @@ public class Users implements UserDetails {
     @OneToMany(mappedBy = "users")
     private List<Word> words = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user")
+    private List<Solve> solves = new ArrayList<>();
+
     @Column(name = "email")
     private String email;
 

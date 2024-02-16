@@ -1,7 +1,9 @@
 package com.server.literasea.controller;
 
 import com.server.literasea.dto.BaseResponse;
+import com.server.literasea.dto.SummaryResultDto;
 import com.server.literasea.dto.TodayArticleDto;
+import com.server.literasea.dto.UserSummaryDto;
 import com.server.literasea.entity.Users;
 import com.server.literasea.service.TodayService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,8 +31,8 @@ public class TodayController {
 
     @PostMapping("/post")
     @Operation(summary = "유저가 작성한 요약 전송하고 결과 불러오기", description = "AI 정해지면 개발 예정입니다.")
-    public BaseResponse<String> todayPost(@AuthenticationPrincipal Users user) {
-        // 미구현 상태입니다.
-        return BaseResponse.success("ok", "Hello, world!");
+    public BaseResponse<List<SummaryResultDto>> todayPost(@AuthenticationPrincipal Users user, List<UserSummaryDto> userSummaryList) {
+        List<SummaryResultDto> SummaryResultDtos = todayService.todayPost(user, userSummaryList);
+        return BaseResponse.success("ok", SummaryResultDtos);
     }
 }
