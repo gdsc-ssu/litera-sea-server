@@ -1,5 +1,7 @@
 package com.server.literasea.controller;
 
+import static com.server.literasea.enums.RequestUri.TODAY_URI;
+
 import com.server.literasea.dto.BaseResponse;
 import com.server.literasea.dto.SummaryResultDto;
 import com.server.literasea.dto.TodayArticleDto;
@@ -18,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/today")
+@RequestMapping(TODAY_URI)
 public class TodayController {
     private final TodayService todayService;
 
