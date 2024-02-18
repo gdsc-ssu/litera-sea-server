@@ -2,13 +2,13 @@ package com.server.literasea.entity;
 
 import com.server.literasea.dto.WordInfoDto;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Builder
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Word {
     @ManyToOne
     @JoinColumn(name = "user_id")
