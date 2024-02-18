@@ -1,5 +1,7 @@
 package com.server.literasea.controller;
 
+import static com.server.literasea.enums.RequestUri.WORD_URI;
+
 import com.server.literasea.dto.BaseResponse;
 import com.server.literasea.dto.WordInfoDto;
 import com.server.literasea.entity.Users;
@@ -22,17 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/word")
+@RequestMapping(WORD_URI)
 @Tag(name="WORD", description = "단어 기능 관련 api")
 public class WordController {
 
     private final WordService wordService;
-
-    @GetMapping("/test")
-    public BaseResponse<String> test(@AuthenticationPrincipal Users user) {
-        System.out.println(user.getEmail()); // 로그인 테스트
-        return BaseResponse.success("ok", "Hello, world!");
-    }
 
     @PostMapping
     @Operation(summary="단어 저장하기")

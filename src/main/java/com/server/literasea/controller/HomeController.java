@@ -1,5 +1,7 @@
 package com.server.literasea.controller;
 
+import static com.server.literasea.enums.RequestUri.HOME_URI;
+
 import com.server.literasea.dto.BadgeInfoDto;
 import com.server.literasea.dto.BaseResponse;
 import com.server.literasea.dto.InventoryInfoDto;
@@ -21,16 +23,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/home")
+@RequestMapping(HOME_URI)
 @Tag(name="HOME", description = "홈화면 관련 api")
 public class HomeController {
     private final HomeService homeService;
     private final UserRepository userRepository;
-
-    @GetMapping("/test")
-    public BaseResponse<String> test() {
-        return BaseResponse.success("ok", "Hello, world!");
-    }
 
     @Operation(summary="메인페이지 불러오기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
