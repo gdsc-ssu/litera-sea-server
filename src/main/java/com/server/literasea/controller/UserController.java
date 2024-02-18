@@ -1,5 +1,7 @@
 package com.server.literasea.controller;
 
+import static com.server.literasea.enums.RequestUri.USER_URI;
+
 import com.server.literasea.config.auth.google.GoogleAuthService;
 import com.server.literasea.dto.BaseResponse;
 import com.server.literasea.dto.LoginResponseDto;
@@ -10,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("v1/api/user")
+@RequestMapping(USER_URI)
 public class UserController {
 
     private final UserService userService;
