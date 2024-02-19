@@ -18,6 +18,7 @@ import com.server.literasea.repository.SolveRepository;
 import com.google.protobuf.Value;
 import com.google.protobuf.util.JsonFormat;
 
+import com.server.literasea.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,27 +33,27 @@ public class TodayService {
 
     private final QuestionRepository questionRepository;
     private final SolveRepository solveRepository;
+    private final UserRepository userRepository;
 
-    public List<TodayArticleDto> findTodayArticles(Users user) throws RuntimeException {
-        Long userDay = user.getDay();
+    public TodayArticleDto findTodayArticles(Users user) throws RuntimeException {
+        Long todayArticleId = user.getDay() * 5;
 
-        List<TodayArticleDto> todayArticleDtos = new ArrayList<>();
+        List<TodayArticleDto.TodayArticle> todayArticleList = new ArrayList<>();
 
         for (int i = 1; i <= 5; i++) {
-            userDay = userDay * 5 + i;
-            Question question = questionRepository.findById(userDay)
+            Question question = questionRepository.findById(todayArticleId + i)
                     .orElseThrow(() -> new RuntimeException("유효한 지문이 존재하지 않습니다.")); // 추후 커스텀 에러 고려 ;
 
-            TodayArticleDto todayArticleDto = TodayArticleDto.builder()
+            TodayArticleDto.TodayArticle todayArticle = TodayArticleDto.TodayArticle.builder()
                     .articleId(question.getId())
                     .articleCategory(question.getArticleCategory())
                     .article(question.getArticle())
                     .build();
 
-            todayArticleDtos.add(todayArticleDto);
+            todayArticleList.add(todayArticle);
         }
 
-        return todayArticleDtos;
+        return new TodayArticleDto(todayArticleList);
     }
 
     public SummaryResultDto todayPost(Users user, UserSummaryDto userSummaryDto) throws IOException {
@@ -80,7 +81,14 @@ public class TodayService {
             summaryResultList.add(summaryResult);
         }
 
+        userDayIncrease(user);
+
         return new SummaryResultDto(summaryResultList);
+    }
+
+    private void userDayIncrease(Users user) {
+        user.userDayPlusOne();
+        userRepository.save(user);
     }
 
     private GenAIResponse calculateScore(String userWriting, String articleText) throws IOException {

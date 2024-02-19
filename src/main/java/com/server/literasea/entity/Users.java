@@ -74,6 +74,10 @@ public class Users implements UserDetails {
                 .build();
     }
 
+    public void userDayPlusOne() {
+        day++;
+    }
+
     @Override
     public ArrayList<GrantedAuthority> getAuthorities() {
         ArrayList<GrantedAuthority> auth = new ArrayList<GrantedAuthority>();
