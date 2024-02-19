@@ -24,9 +24,9 @@ public class TodayController {
 
     @GetMapping("/")
     @Operation(summary = "오늘 요약 할 지문 5개 불러오기", description = "로그인은 추후 추가 예정입니다.")
-    public BaseResponse<List<TodayArticleDto>> todayGet(@AuthenticationPrincipal Users user) {
-        List<TodayArticleDto> todayArticleDtos = todayService.findTodayArticles(user);
-        return BaseResponse.success("ok", todayArticleDtos);
+    public BaseResponse<TodayArticleDto> todayGet(@AuthenticationPrincipal Users user) {
+        TodayArticleDto todayArticleDto = todayService.findTodayArticles(user);
+        return BaseResponse.success("ok", todayArticleDto);
     }
 
     @PostMapping("/post")
