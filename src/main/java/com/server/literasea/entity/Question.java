@@ -20,5 +20,6 @@ public class Question {
     private ArticleCategory articleCategory;
 
     @Column(name = "answer")
+    @Enumerated(EnumType.STRING)
     private String answer;
 }
