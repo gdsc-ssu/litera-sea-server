@@ -12,10 +12,11 @@ public class Question {
     @Column(name = "question_id")
     private Long id;
 
-    @Column(name = "article")
+    @Column(name = "article", columnDefinition = "TEXT")
     private String article;
 
     @Column(name = "category")
+    @Enumerated(EnumType.STRING)
     private ArticleCategory articleCategory;
 
     @Column(name = "answer")
