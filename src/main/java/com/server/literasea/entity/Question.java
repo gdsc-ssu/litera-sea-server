@@ -19,7 +19,6 @@ public class Question {
     @Enumerated(EnumType.STRING)
     private ArticleCategory articleCategory;
 
-    @Column(name = "answer")
-    @Enumerated(EnumType.STRING)
+    @Column(name = "answer",columnDefinition = "TEXT")
     private String answer;
 }
