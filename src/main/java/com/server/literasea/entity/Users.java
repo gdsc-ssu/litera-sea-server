@@ -33,6 +33,7 @@ public class Users implements UserDetails {
     @OneToMany(mappedBy = "users")
     private List<Word> words = new ArrayList<>();
 
+    @Builder.Default
     @OneToMany(mappedBy = "user")
     private List<Solve> solves = new ArrayList<>();
 
