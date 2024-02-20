@@ -1,17 +1,19 @@
 package com.server.literasea.entity;
 
+import com.server.literasea.Datetime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
 @Getter
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Solve {
+public class Solve extends Datetime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "solve_id")
