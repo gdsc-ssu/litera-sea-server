@@ -8,14 +8,12 @@ import lombok.Getter;
 @Getter
 public class WordInfoDto {
     private String koreanWord;
-    private String chineseWord;
     private String mean;
     private Long wordId;
 
     public static WordInfoDto from(Word word){
         return WordInfoDto.builder()
                 .koreanWord(word.getKoreanWord())
-                .chineseWord(word.getChineseWord())
                 .mean(word.getMean())
                 .wordId(word.getId())
                 .build();

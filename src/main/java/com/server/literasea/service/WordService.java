@@ -12,14 +12,12 @@ import com.server.literasea.repository.UserRepository;
 import com.server.literasea.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.*;
 
 import static com.server.literasea.exception.UsersExceptionType.NOT_FOUND;
@@ -31,6 +29,11 @@ import static com.server.literasea.exception.WordExceptionType.NOT_FOUND_ID;
 @Service
 public class WordService {
     //repository------------------------------------------------------------------------
+    //@Value("${stdict.secret}")
+    private final String apiKey="3965A3D58380B1D61EF5B7C521C29FC3";
+
+    private final RestTemplate restTemplate;
+    private final ObjectMapper objectMapper;
     private final WordRepository wordRepository;
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
@@ -71,6 +74,7 @@ public class WordService {
                 .orElseThrow(()->new WordException(NOT_FOUND_ID));
     }
     //POSTword---------------------------------------------------------------------------------
+    /*
     @Transactional
     public String saveWord(Users logInUser, String requestWord) {
         String mean= getDefinition(requestWord);
@@ -80,6 +84,8 @@ public class WordService {
         wordRepository.save(word);
         return mean;  //이거 Word로 리턴하면 왜 오류?
     }
+
+     */
     //---------------------------------------------------------------------------------------
     //국립국어원 사전API
     public String getDefinition(String word) {
@@ -108,5 +114,19 @@ public class WordService {
         }
     }
 
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<ResponseDictDto> response = 
+                restTemplate.exchange(url, HttpMethod.GET, entity, ResponseDictDto.class);
+        System.out.println("url = " + url);
+        if (response.getBody() != null && response.getBody().getChannel() != null
+                && !response.getBody().getChannel().getItem().isEmpty()) {
+            // 응답에서 'message'의 'content' 추출
+            System.out.println("response.getBody().getChannel().getItem().get(0).getSense().getDefinition() = " + response.getBody().getChannel().getItem().get(0).getSense().getDefinition());
+            return response.getBody().getChannel().getItem().get(0).getSense().getDefinition();
+        } else {
+            return "No definition found for the word: " + word;
+        }
+    }
 
 }
