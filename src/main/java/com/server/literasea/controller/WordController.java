@@ -33,10 +33,10 @@ public class WordController {
     @PostMapping
     @Operation(summary="단어 저장하기")
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
-    public ResponseEntity<WordInfoDto> saveWordByDto(@AuthenticationPrincipal Users user,
-                                              @RequestBody WordInfoDto wordInfoDto){
+    public ResponseEntity<String> saveWordByDto(@AuthenticationPrincipal Users user,
+                                              @RequestBody String requestWord){
         return ResponseEntity.status(HttpStatus.CREATED).
-                body(wordService.saveWord(user, wordInfoDto));
+                body(wordService.saveWord(user, requestWord));
     }
 
     @GetMapping("/wordList")
@@ -52,5 +52,13 @@ public class WordController {
     public ResponseEntity<WordInfoDto> getWordDtoByWordId(@AuthenticationPrincipal Users user,
                                                           @PathVariable Long wordId){
         return ResponseEntity.ok(wordService.findWordDtoByWordId(wordId));
+    }
+
+    @GetMapping("/testApi")
+    @Operation(summary="apiTEST")
+    @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
+    public ResponseEntity<String> testAPi(@AuthenticationPrincipal Users user,
+                                                          @RequestBody String word){
+        return ResponseEntity.ok(wordService.getFirstDefinition(word));
     }
 }
