@@ -49,7 +49,7 @@ public class UserService {
         userInfo.put("email", "test@test.com");
         userInfo.put("name", userName);
 
-        Users users = userRepository.findByEmail(userName).orElseGet(
+        Users users = userRepository.findByEmail("test@test.com").orElseGet(
                 () -> saveUser(userInfo)
         );
 

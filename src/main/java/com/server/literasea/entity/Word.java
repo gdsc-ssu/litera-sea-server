@@ -29,10 +29,12 @@ public class Word {
     @Column
     private String mean;
 
+
     public static Word from(String word, String mean){
         return Word.builder()
                 .koreanWord(word)
                 //.chineseWord(wordInfoDto.getChineseWord())
+
                 .mean(mean)
                 .build();
     }
