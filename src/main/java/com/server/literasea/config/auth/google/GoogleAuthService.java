@@ -8,6 +8,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +28,8 @@ public class GoogleAuthService {
     private final GoogleClient googleClient;
 
     public GetGoogleTokenResponse getTokensResponse(String code) throws RuntimeException, JsonProcessingException {
-        GetTokensRequestBody getTokensRequestBody = new GetTokensRequestBody(client_id , client_secret, code, "authorization_code", redirect_uri);
+        String decodeCode = URLDecoder.decode(code, StandardCharsets.UTF_8);
+        GetTokensRequestBody getTokensRequestBody = new GetTokensRequestBody(client_id , client_secret, decodeCode, "authorization_code", redirect_uri);
         GetGoogleTokenResponse getGoogleTokenResponse = googleClient.getTokensResponse(getTokensRequestBody);
         if (getGoogleTokenResponse.getHttpStatus().equals(HttpStatus.BAD_REQUEST))
             throw new RuntimeException("구글 인증에 실패하였습니다.");
@@ -34,8 +37,7 @@ public class GoogleAuthService {
         return getGoogleTokenResponse;
     }
 
-    public Map<String, String> getUserGoogleProfile(GetGoogleTokenResponse.TokenResponse tokenResponse) {
-        HashMap<String, String> googleUserInfo = new HashMap<>();
+    public UserInfo getUserGoogleProfile(GetGoogleTokenResponse.TokenResponse tokenResponse) {
 
         String reqURL = "https://www.googleapis.com/userinfo/v2/me";
 
@@ -46,9 +48,8 @@ public class GoogleAuthService {
 
         JsonNode res = restTemplate.exchange(reqURL, HttpMethod.GET, entity, JsonNode.class).getBody();
 
-        googleUserInfo.put("email", res.get("email").toString());
-        googleUserInfo.put("name", res.get("name").toString());
-        googleUserInfo.put("id", res.get("id").toString());
+        UserInfo googleUserInfo = new UserInfo(res.get("name").toString().replaceAll("\"", ""),
+                res.get("email").toString().replaceAll("\"", ""));
 
         return googleUserInfo;
     }
