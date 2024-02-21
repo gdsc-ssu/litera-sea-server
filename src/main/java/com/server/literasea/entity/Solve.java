@@ -23,7 +23,7 @@ public class Solve extends Datetime {
     @JoinColumn(name = "question_id")
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
 

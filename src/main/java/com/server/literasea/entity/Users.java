@@ -34,7 +34,7 @@ public class Users implements UserDetails {
     private List<Word> words = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Solve> solves = new ArrayList<>();
 
     @Column(name = "email")
