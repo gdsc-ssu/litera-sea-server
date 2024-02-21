@@ -42,8 +42,6 @@ public class WordController {
                 body(wordService.saveWord(user, requestWord));
     }
 
-     */
-
     @GetMapping("/wordList")
     @Operation(summary="유저가 저장한 단어 리스트 가져오기")
     @ApiResponse(responseCode = "200", description = "DTO 리스트형식으로 정보 반환")
