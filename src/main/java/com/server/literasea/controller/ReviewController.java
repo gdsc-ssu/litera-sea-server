@@ -33,7 +33,7 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getSolveDateListByUser(user));
     }
 
-    @GetMapping("/{createAt}")
+    @GetMapping("/solveIdList/{createAt}")
     @Operation(summary="선택한 날짜에 푼 문제들의 SolveId리스트 반환")
     @ApiResponse(responseCode = "200", description = "Long타입 List반환")
     public ResponseEntity<List<Long>> getSolveIdListByDay(
@@ -42,11 +42,11 @@ public class ReviewController {
         return ResponseEntity.ok(reviewService.getSolveIdListByDay(user, createAt));
     }
 
-    @GetMapping("/{solve_id}")
+    @GetMapping("/{solveId}")
     @Operation(summary="solveId로 리뷰 정보 DTO반환받기")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
     public ResponseEntity<ResponseReviewDto> getReviewDto(@AuthenticationPrincipal Users user,
-                                                          @PathVariable Long solveId){
-        return ResponseEntity.ok(reviewService.getReviewDtoBySolveId(user, solveId));
+                                                          @PathVariable("solveId") Long solveId){
+        return ResponseEntity.ok(reviewService.getReviewDtoBySolveId(solveId));
     }
 }

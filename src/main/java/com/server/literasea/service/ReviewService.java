@@ -21,7 +21,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public List<String> getSolveDateListByUser(Users user) {
-        List<Solve> userSolveList=solveRepository.findAllByUser(user);
+        List<Solve> userSolveList=user.getSolves();
         List<String> userSolveDateList=new ArrayList<>();
         for(Solve solve:userSolveList){
             userSolveDateList.add(solve.getCreateAt());
@@ -46,8 +46,8 @@ public class ReviewService {
     }
 
     @Transactional(readOnly = true)
-    public ResponseReviewDto getReviewDtoBySolveId(Users user, Long solveId) {
-        Solve chosenSolve=solveRepository.findByIdAndUser(solveId, user);
+    public ResponseReviewDto getReviewDtoBySolveId(Long solveId) {
+        Solve chosenSolve=solveRepository.findById(solveId).get();
         Question chosenQuestion= chosenSolve.getQuestion();
         return ResponseReviewDto.toDto(chosenQuestion, chosenSolve);
     }
