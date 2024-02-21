@@ -23,14 +23,14 @@ public class TodayController {
     private final TodayService todayService;
 
     @GetMapping("/")
-    @Operation(summary = "오늘 요약 할 지문 5개 불러오기", description = "로그인은 추후 추가 예정입니다.")
+    @Operation(summary = "오늘 요약 할 지문 5개 불러오기")
     public BaseResponse<TodayArticleDto> todayGet(@AuthenticationPrincipal Users user) {
         TodayArticleDto todayArticleDto = todayService.findTodayArticles(user);
         return BaseResponse.success("ok", todayArticleDto);
     }
 
     @PostMapping("/post")
-    @Operation(summary = "유저가 작성한 요약 전송하고 결과 불러오기", description = "AI 정해지면 개발 예정입니다.")
+    @Operation(summary = "유저가 작성한 요약 전송하고 결과 불러오기")
     public BaseResponse<SummaryResultDto> todayPost(@AuthenticationPrincipal Users user, @RequestBody UserSummaryDto userSummaryDto) throws IOException {
         SummaryResultDto summaryResultDto = todayService.todayPost(user, userSummaryDto);
         return BaseResponse.success("ok", summaryResultDto);
