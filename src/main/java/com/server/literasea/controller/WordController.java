@@ -30,13 +30,14 @@ public class WordController {
 
     private final WordService wordService;
 
-    @PostMapping
+    @PostMapping("/{requestWord}")
     @Operation(summary="단어 저장하기")
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
-    public ResponseEntity<WordInfoDto> saveWordByDto(@AuthenticationPrincipal Users user,
-                                              @RequestBody WordInfoDto wordInfoDto){
+    //TODO: requestWord 왜 PathVariable은되고, RequestBody는 안되느닞 정리하기
+    public ResponseEntity<String> saveWordByDto(@AuthenticationPrincipal Users user,
+                                              @PathVariable("requestWord") String requestWord){
         return ResponseEntity.status(HttpStatus.CREATED).
-                body(wordService.saveWord(user, wordInfoDto));
+                body(wordService.saveWord(user, requestWord));
     }
 
     @GetMapping("/wordList")
@@ -52,5 +53,13 @@ public class WordController {
     public ResponseEntity<WordInfoDto> getWordDtoByWordId(@AuthenticationPrincipal Users user,
                                                           @PathVariable Long wordId){
         return ResponseEntity.ok(wordService.findWordDtoByWordId(wordId));
+    }
+
+    @GetMapping("/apiTest/{word}")
+    @Operation(summary="apiTEST")
+    @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
+    public ResponseEntity<?> testAPi(@AuthenticationPrincipal Users user,
+                                     @PathVariable String word){
+        return ResponseEntity.ok(wordService.getDefinition(word));
     }
 }
