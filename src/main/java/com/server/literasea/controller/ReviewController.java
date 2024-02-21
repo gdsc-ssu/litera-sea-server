@@ -26,11 +26,6 @@ import java.util.List;
 public class ReviewController {
     private final ReviewService reviewService;
 
-    @GetMapping("/test")
-    public BaseResponse<String> test() {
-        return BaseResponse.success("ok", "Hello, world!");
-    }
-
     @GetMapping("/dayList")
     @Operation(summary="유저들이 지금까지 문제 푼 날짜들 반환")
     @ApiResponse(responseCode = "200", description = "날짜를 String형으로 List반환")
