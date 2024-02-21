@@ -12,10 +12,7 @@ import com.server.literasea.exception.WordException;
 import com.server.literasea.repository.UserRepository;
 import com.server.literasea.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
@@ -101,17 +98,23 @@ public class WordService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<Object> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<ResponseDictDto> response = restTemplate.postForEntity(url, entity, ResponseDictDto.class);
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 
-        if (response.getBody() != null && response.getBody().getChannel() != null
-                && !response.getBody().getChannel().getItem().isEmpty()) {
-            // 응답에서 'message'의 'content' 추출
-            return response.getBody().getChannel().getItem().get(0).getSense().getDefinition();
-        } else {
-            return "No definition found for the word: " + word;
-        }
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+
+        System.out.println(response);
+
+//        if (response.getBody() != null && response.getBody().getChannel() != null
+//                && !response.getBody().getChannel().getItem().isEmpty()) {
+//            // 응답에서 'message'의 'content' 추출
+//            return response.getBody().getChannel().getItem().get(0).getSense().getDefinition();
+//        } else {
+//            return "No definition found for the word: " + word;
+//        }
+        return "";
     }
 
     public String getDefinition2(String word) {
@@ -135,9 +138,9 @@ public class WordService {
         }
     }
 
-    public  String getFirstDefinition(String word) {
+    public String getFirstDefinition(String word) {
         try {
-            URL url = new URL("https://stdict.korean.go.kr/api/search.do?key=" + key
+            URL url = new URL("https://stdict.korean.go.kr/api/search.do?key=" + apiKey
                     + "&type_search=search&q=" + word);
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -150,6 +153,7 @@ public class WordService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 
     public static String getValue(String tag, Element element) {

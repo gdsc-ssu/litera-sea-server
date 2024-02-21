@@ -54,11 +54,10 @@ public class WordController {
         return ResponseEntity.ok(wordService.findWordDtoByWordId(wordId));
     }
 
-    @GetMapping("/testApi")
+    @GetMapping("/testApi/{word}")
     @Operation(summary="apiTEST")
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
-    public ResponseEntity<String> testAPi(@AuthenticationPrincipal Users user,
-                                                          @RequestBody String word){
-        return ResponseEntity.ok(wordService.getFirstDefinition(word));
+    public ResponseEntity<String> testAPi(@AuthenticationPrincipal Users user, @PathVariable String word){
+        return ResponseEntity.ok(wordService.getDefinition(word));
     }
 }
