@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +38,7 @@ public class WordController {
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
     //TODO: requestWord 왜 PathVariable은되고, RequestBody는 안되느닞 정리하기
     public ResponseEntity<String> saveWordByDto(@AuthenticationPrincipal Users user,
-                                              @PathVariable("requestWord") String requestWord){
-
+                                                @PathVariable("requestWord") String requestWord){
         return ResponseEntity.status(HttpStatus.CREATED).
                 body(wordService.saveWord(user, requestWord));
     }

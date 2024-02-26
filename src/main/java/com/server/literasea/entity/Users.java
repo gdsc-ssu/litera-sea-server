@@ -30,11 +30,12 @@ public class Users implements UserDetails {
     private Inventory inventory;
 
     @Builder.Default
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Word> words = new ArrayList<>();
 
     @Builder.Default
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Solve> solves = new ArrayList<>();
 
     @Column(name = "email")

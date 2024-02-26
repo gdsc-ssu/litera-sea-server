@@ -9,6 +9,7 @@ import com.server.literasea.exception.UsersException;
 import com.server.literasea.exception.WordException;
 import com.server.literasea.repository.UserRepository;
 import com.server.literasea.repository.WordRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -33,6 +34,7 @@ public class WordService {
     private final UserRepository userRepository;
     private final RestTemplate restTemplate;
     private final ObjectMapper objectMapper;
+    private final EntityManager em;
 
     @Value("${dict.secret}")
     private String apiKey;
@@ -80,12 +82,11 @@ public class WordService {
     //POSTword---------------------------------------------------------------------------------
     @Transactional
     public String saveWord(Users logInUser, String requestWord) {
-        String mean = getDefinition(requestWord);
-        Users user = findUsersById(logInUser.getId());  //이거 왜 다이렉트로 매개변수로 받은 User쓰면 안됨?
-        Word word = Word.from(requestWord, mean);
-        user.addWord(word);
+        String mean= getDefinition(requestWord);
+        Word word=Word.from(requestWord, mean);
+        logInUser.addWord(word);
         wordRepository.save(word);
-        return mean;  //이거 Word로 리턴하면 왜 오류?
+        return mean;
     }
 
     //---------------------------------------------------------------------------------------
@@ -105,14 +106,12 @@ public class WordService {
 
         ResponseEntity<ResponseDictDto> response =
                 restTemplate.exchange(url, HttpMethod.GET, entity, ResponseDictDto.class);
-        System.out.println("url = " + url);
         if (response.getBody() != null && response.getBody().getChannel() != null
                 && !response.getBody().getChannel().getItem().isEmpty()) {
-            // 응답에서 'message'의 'content' 추출
-            System.out.println("response.getBody().getChannel().getItem().get(0).getSense().getDefinition() = " + response.getBody().getChannel().getItem().get(0).getSense().getDefinition());
             return response.getBody().getChannel().getItem().get(0).getSense().getDefinition();
         } else {
             return "No definition found for the word: " + word;
         }
     }
 }
+
