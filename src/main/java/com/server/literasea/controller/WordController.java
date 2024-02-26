@@ -32,6 +32,7 @@ public class WordController {
 
     private final WordService wordService;
 
+
     @PostMapping("/{requestWord}")
     @Operation(summary="단어 저장하기")
     @ApiResponse(responseCode = "201", description = "단어 저장 완료")
@@ -62,6 +63,7 @@ public class WordController {
     @ApiResponse(responseCode = "200", description = "DTO형식으로 정보 반환")
     public ResponseEntity<?> testAPi(@AuthenticationPrincipal Users user,
                                      @PathVariable String word){
+
         return ResponseEntity.ok(wordService.getDefinition(word));
     }
 }

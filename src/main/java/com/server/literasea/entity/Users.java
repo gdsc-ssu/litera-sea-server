@@ -34,6 +34,7 @@ public class Users implements UserDetails {
     private List<Word> words = new ArrayList<>();
 
     @Builder.Default
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Solve> solves = new ArrayList<>();
 

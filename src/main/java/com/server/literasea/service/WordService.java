@@ -1,6 +1,5 @@
 package com.server.literasea.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.server.literasea.dto.ResponseDictDto;
 import com.server.literasea.dto.WordInfoDto;
@@ -27,7 +26,6 @@ import static com.server.literasea.exception.UsersExceptionType.NOT_FOUND;
 import static com.server.literasea.exception.WordExceptionType.NOT_FOUND_ID;
 
 
-
 @RequiredArgsConstructor
 @Service
 public class WordService {
@@ -40,38 +38,47 @@ public class WordService {
 
     @Value("${dict.secret}")
     private String apiKey;
+
     //공용------------------------------------------------------------------------------------
     //TODO: 토큰에서 유저 아이디 빼기
-    private Long getUserIdByToken(String token){return 1l;};
-    private Users findUsersById(Long usersId){
+    private Long getUserIdByToken(String token) {
+        return 1l;
+    }
+
+    ;
+
+    private Users findUsersById(Long usersId) {
         return userRepository.findById(usersId)
                 .orElseThrow(() -> new UsersException(NOT_FOUND));
     }
-    //wordList--------------------------------------------------------------------
 
+    //wordList--------------------------------------------------------------------
     @Transactional(readOnly = true)
     public List<WordInfoDto> getWordDtoList(Users users) {
-        List<Word> wordList=wordRepository.findAllByUsers(users);
-        List<WordInfoDto> wordInfoDtoList=new ArrayList<>();
-        for(int i=0;i<wordList.size();i++){
+        List<Word> wordList = wordRepository.findAllByUsers(users);
+        List<WordInfoDto> wordInfoDtoList = new ArrayList<>();
+        for (int i = 0; i < wordList.size(); i++) {
             wordInfoDtoList.add(WordInfoDto.from(wordList.get(i)));
         }
         return wordInfoDtoList;
     }
 
-    private List<Word> findWordListByUsers(Users users){
+    private List<Word> findWordListByUsers(Users users) {
         return users.getWords();
     }
+
     //GETword------------------------------------------------------------------------
     @Transactional(readOnly = true)
-    public WordInfoDto findWordDtoByWordId(Long wordId){
-        Word word= findWordByWordId(wordId);
+    public WordInfoDto findWordDtoByWordId(Long wordId) {
+        Word word = findWordByWordId(wordId);
         return WordInfoDto.from(word);
     }
-    private Word findWordByWordId(Long wordId){
+
+    private Word findWordByWordId(Long wordId) {
         return wordRepository.findById(wordId)
-                .orElseThrow(()->new WordException(NOT_FOUND_ID));
+                .orElseThrow(() -> new WordException(NOT_FOUND_ID));
     }
+
     //POSTword---------------------------------------------------------------------------------
     @Transactional
     public String saveWord(Users logInUser, String requestWord) {
@@ -81,6 +88,7 @@ public class WordService {
         wordRepository.save(word);
         return mean;
     }
+
     //---------------------------------------------------------------------------------------
     //국립국어원 사전API
     public String getDefinition(String word) {
@@ -106,3 +114,4 @@ public class WordService {
         }
     }
 }
+

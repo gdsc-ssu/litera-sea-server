@@ -3,9 +3,11 @@ package com.server.literasea.config.auth.google;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
@@ -17,17 +19,26 @@ public class GoogleClient {
         GetGoogleTokenResponse getGoogleTokenResponse = new GetGoogleTokenResponse();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        WebClient webClient = WebClient.builder()
-                .baseUrl(googleAuthUrl)
-                .build();
+        RestTemplate rt = new RestTemplate();
 
-        ResponseEntity<String> responseEntity = webClient.post()
-                .uri("/token")
-                .header("content-type: application/x-www-form-urlencoded")
-                .bodyValue(getTokensRequestBody)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type", "application/x-www-form-urlencoded");
+
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("client_id", getTokensRequestBody.getClient_id());
+        params.add("client_secret", getTokensRequestBody.getClient_secret());
+        params.add("code", getTokensRequestBody.getCode());
+        params.add("grant_type", getTokensRequestBody.getGrant_type());
+        params.add("redirect_uri", getTokensRequestBody.getRedirect_uri());
+
+        HttpEntity<MultiValueMap<String, String>> accessTokenRequest = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> responseEntity = rt.exchange(
+                googleAuthUrl + "/token",
+                HttpMethod.POST,
+                accessTokenRequest,
+                String.class
+        );
 
         getGoogleTokenResponse.setHttpStatus((HttpStatus) responseEntity.getStatusCode());
         if (getGoogleTokenResponse.getHttpStatus().equals(HttpStatus.OK)) {
